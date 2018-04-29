@@ -1,0 +1,11 @@
+[package]
+name = "repo"
+version = "0.1.0"
+authors = ["Jay Phelps <hello@jayphelps.com>"]
+
+[dependencies]
+llvm-sys = "60.0.2"
+
+[[bin]]
+name = "repo"
+path = "main.rs"

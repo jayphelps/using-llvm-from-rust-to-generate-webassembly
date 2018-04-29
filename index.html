@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<script>
+
+  let heap;
+  let importObject = {
+    env: {
+      log: strIndex => {
+        let str = '';
+        // C-strings are null terminated
+        for (let i = strIndex; heap[i] !== 0; i++) {
+          str += String.fromCharCode(heap[i]);
+        }
+
+        console.log(str);
+      }
+    }
+  };
+
+  WebAssembly.instantiateStreaming(fetch('main.wasm'), importObject)
+    .then(result => {
+      const exports = result.instance.exports;
+      // the linear memory is exported (by default) so we need to
+      // get a reference to it before we call main() so that
+      // the log() function can access it. Alternatively, you
+      // could pass --import-memory to s2wasm and do that instead
+      heap = new Uint8Array(exports.memory.buffer);
+      exports.main();
+    });
+
+</script>
+<body></body>
+</html>
